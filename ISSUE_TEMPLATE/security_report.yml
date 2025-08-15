@@ -1,0 +1,111 @@
+name: 🔒 Security Report
+description: Report a security vulnerability (use private reporting for sensitive issues)
+title: "[SECURITY]: "
+labels: ["security", "needs triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **IMPORTANT**: For sensitive security vulnerabilities, please use GitHub's private vulnerability reporting feature instead of creating a public issue.
+        
+        This template is for general security improvements and non-sensitive security-related issues.
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: Which project has the security concern?
+      options:
+        - einsteini-android (Mobile App)
+        - einsteini-backend (API/Server)
+        - einsteini-dashboard (Web Dashboard)
+        - einsteini-extension (Browser Extension)
+        - Infrastructure/DevOps
+        - Multiple projects
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity Level
+      description: How severe is this security issue?
+      options:
+        - Low - General security improvement
+        - Medium - Potential security risk
+        - High - Confirmed vulnerability (consider private reporting)
+        - Critical - Actively exploitable (use private reporting)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Security Category
+      description: What type of security issue is this?
+      options:
+        - Authentication/Authorization
+        - Data Protection
+        - Input Validation
+        - Cryptography
+        - Network Security
+        - Dependency Vulnerability
+        - Code Quality/Security
+        - Configuration
+        - Privacy
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Security Issue Description
+      description: Describe the security concern (avoid sensitive details in public issues)
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact
+      description: What could happen if this issue is not addressed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce (if applicable)
+      description: How can this issue be reproduced? (omit sensitive details)
+
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: Suggested Mitigation
+      description: Do you have suggestions for how to fix this issue?
+
+  - type: checkboxes
+    id: environment
+    attributes:
+      label: Environment
+      description: Where does this issue occur?
+      options:
+        - label: Development environment
+        - label: Staging environment
+        - label: Production environment
+        - label: All environments
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: This is not a sensitive vulnerability (I'm not exposing private data)
+          required: true
+        - label: I understand that sensitive issues should use private vulnerability reporting
+          required: true

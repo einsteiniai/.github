@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🌐 einsteini.ai Website
+    url: https://einsteini.ai
+    about: Visit our official website for more information
+  - name: 📧 Contact Support
+    url: https://einsteini.ai/contact
+    about: Contact us directly for support inquiries
+  - name: 💬 GitHub Discussions
+    url: https://github.com/einsteiniai/.github/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🔒 Private Security Report
+    url: https://github.com/einsteiniai/.github/security/advisories/new
+    about: Report security vulnerabilities privately

@@ -1,0 +1,84 @@
+name: 📚 Documentation
+description: Report an issue with documentation or suggest improvements
+title: "[DOCS]: "
+labels: ["documentation", "needs triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve our documentation! Please provide details about what's missing, unclear, or incorrect.
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: Which project's documentation needs attention?
+      options:
+        - einsteini-android (Mobile App)
+        - einsteini-backend (API/Server)
+        - einsteini-dashboard (Web Dashboard)
+        - einsteini-extension (Browser Extension)
+        - Organization README
+        - Contributing guidelines
+        - General documentation
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation issue is this?
+      options:
+        - Missing documentation
+        - Incorrect information
+        - Unclear instructions
+        - Outdated content
+        - Broken links
+        - Grammar/spelling
+        - Code examples
+        - API documentation
+        - Setup/installation guide
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where is this documentation located? (file path, URL, section name)
+      placeholder: e.g., README.md, docs/api.md, line 42
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Issue Description
+      description: Describe what's wrong or missing in the documentation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How should this be fixed or what should be added?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any additional context or examples that might help.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have verified this issue exists in the latest version
+          required: true

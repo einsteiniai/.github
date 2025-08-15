@@ -1,0 +1,79 @@
+name: ❓ Question
+description: Ask a question about the project
+title: "[QUESTION]: "
+labels: ["question", "needs triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're here to help! Please check our documentation first, then ask away.
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: Which project is your question about?
+      options:
+        - einsteini-android (Mobile App)
+        - einsteini-backend (API/Server)
+        - einsteini-dashboard (Web Dashboard)
+        - einsteini-extension (Browser Extension)
+        - General/Organization
+        - Development setup
+        - Contributing
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: question-type
+    attributes:
+      label: Question Type
+      description: What type of question is this?
+      options:
+        - How to use a feature
+        - Technical implementation
+        - Development/setup help
+        - API/integration question
+        - Best practices
+        - Troubleshooting
+        - Architecture/design
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What would you like to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide any relevant context, what you've tried, or background information.
+
+  - type: textarea
+    id: what-tried
+    attributes:
+      label: What I've Tried
+      description: What have you already tried or researched?
+
+  - type: textarea
+    id: expected-outcome
+    attributes:
+      label: Expected Outcome
+      description: What are you trying to achieve?
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Done
+      options:
+        - label: I have searched existing issues and discussions
+        - label: I have checked the documentation
+        - label: I have searched online for similar questions

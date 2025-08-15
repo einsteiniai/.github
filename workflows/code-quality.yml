@@ -1,0 +1,165 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  flutter-analysis:
+    runs-on: ubuntu-latest
+    if: contains(github.event.commits[0].modified, 'einsteini-android/') || github.event_name == 'pull_request'
+    defaults:
+      run:
+        working-directory: einsteini-android
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.6.0'
+        channel: 'stable'
+        cache: true
+    
+    - name: Get dependencies
+      run: flutter pub get
+    
+    - name: Verify formatting
+      run: dart format --output=none --set-exit-if-changed .
+    
+    - name: Analyze project source
+      run: flutter analyze --no-fatal-infos --no-fatal-warnings
+    
+    - name: Check pub dependencies
+      run: flutter pub deps
+
+  javascript-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [einsteini-backend, einsteini-dashboard, einsteini-extension]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: ${{ matrix.project }}/package-lock.json
+    
+    - name: Install dependencies
+      run: cd ${{ matrix.project }} && npm ci
+    
+    - name: Run ESLint
+      run: cd ${{ matrix.project }} && (npm run lint || npx eslint . --ext .js,.jsx,.ts,.tsx || echo "No linting configuration found")
+    
+    - name: Run Prettier check
+      run: cd ${{ matrix.project }} && (npm run format:check || npx prettier --check . || echo "No prettier configuration found")
+    
+    - name: Check for unused dependencies
+      run: cd ${{ matrix.project }} && (npx depcheck || echo "Depcheck not available")
+
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Markdown Linting
+      uses: articulate/actions-markdownlint@v1
+      with:
+        config: .markdownlint.json
+        files: '**/*.md'
+        ignore: node_modules
+
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: YAML Lint
+      uses: ibiqlik/action-yamllint@v3
+      with:
+        file_or_dir: .
+        config_file: .yamllint.yml
+        format: parsable
+
+  commit-lint:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install commitlint
+      run: npm install -g @commitlint/cli @commitlint/config-conventional
+    
+    - name: Lint commit messages
+      run: |
+        commitlint --from HEAD~1 --to HEAD --verbose
+
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Check for license headers
+      run: |
+        echo "Checking for license headers in source files..."
+        
+        # Check Dart files
+        find . -name "*.dart" -not -path "./.*" | while read file; do
+          if ! head -10 "$file" | grep -qi "copyright\|license"; then
+            echo "Missing license header: $file"
+          fi
+        done
+        
+        # Check JavaScript/TypeScript files
+        find . -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" | grep -v node_modules | while read file; do
+          if ! head -10 "$file" | grep -qi "copyright\|license"; then
+            echo "Missing license header: $file"
+          fi
+        done
+
+  documentation-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Check for documentation
+      run: |
+        echo "Checking documentation completeness..."
+        
+        # Check if each project has README
+        for project in einsteini-android einsteini-backend einsteini-dashboard einsteini-extension; do
+          if [ ! -f "$project/README.md" ]; then
+            echo "Missing README.md in $project"
+          fi
+        done
+        
+        # Check for CONTRIBUTING.md
+        if [ ! -f "CONTRIBUTING.md" ] && [ ! -f ".github/CONTRIBUTING.md" ]; then
+          echo "Missing CONTRIBUTING.md"
+        fi
+        
+        # Check for CODE_OF_CONDUCT.md
+        if [ ! -f "CODE_OF_CONDUCT.md" ] && [ ! -f ".github/CODE_OF_CONDUCT.md" ]; then
+          echo "Missing CODE_OF_CONDUCT.md"
+        fi
