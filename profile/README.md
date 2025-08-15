@@ -2,7 +2,7 @@
 
 <div align="center">
 	<img src="https://einsteini.ai/assets/images/einsteini_black.png" alt="Einsteini Logo" width="120" />
-	<h1>Einsteini Organization</h1>
+	<h1>einsteini.ai</h1>
 	<h3>Effortlessly Human. Powerfully AI.</h3>
 	<a href="https://einsteini.ai"><img src="https://img.shields.io/badge/Website-einsteini.ai-blue?style=for-the-badge" alt="Website" /></a>
 	<a href="https://github.com/einsteiniai/.github/discussions"><img src="https://img.shields.io/badge/Discussions-Join%20Us-brightgreen?style=for-the-badge" alt="Discussions" /></a>
